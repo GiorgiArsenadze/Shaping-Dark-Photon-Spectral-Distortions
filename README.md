@@ -10,8 +10,11 @@ This is the code to calculate CMB spectral distortions from dark photon oscillat
 # Code
 
 # Authors
-* Giorgi Arsenadze
-* Andrea Caputo
-* Xucheng Gan
-* Hongwan Liu
-* Joshua T. Ruderman
+* Giorgi Arsenadze; ga1348@nyu.edu
+* Andrea Caputo; andrea.caputo@cern.ch
+* Xucheng Gan; xg767@nyu.edu
+* Hongwan Liu; hongwanl@princeton.edu
+* Joshua T. Ruderman; ruderman@nyu.edu
+
+# Citation
+
