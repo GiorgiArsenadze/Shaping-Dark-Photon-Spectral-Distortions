@@ -1,7 +1,7 @@
 Comment: we need files:
 * notebooks
 * paper/plots
-* data (I think we should have data for probability egeneraget seperately hereand also code for it)
+* data (Here we will also have probability generated from notebooks.)
   
 
 
