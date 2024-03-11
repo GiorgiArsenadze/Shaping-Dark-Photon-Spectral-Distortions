@@ -1,0 +1,14 @@
+#!/bin/bash
+#SBATCH -N 1   # node count
+#SBATCH --ntasks-per-node=1
+#SBATCH -t 2-4:00:00
+#SBATCH --mem=8GB
+##SBATCH --mail-type=begin
+##SBATCH --mail-type=end
+##SBATCH --mail-user=ga1348@nyu.edu
+
+
+cd /home/ga1348/CMB_DP_DISTORTION/CMB_Dist_Updated/cluster
+
+
+python Testing_Code_cluster.py
