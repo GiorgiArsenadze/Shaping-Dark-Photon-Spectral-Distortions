@@ -4,8 +4,7 @@ cons_func_distortion.py - here you will find constants and functions mostly spec
 
 calc_distortion.py - this file has functions to calculate actuall distortions for different cases and eras
 
-prob_Ap_A - here we calculate transition probability and save it in folder "data": "../data/Probability.npz". Unless you would like to increase the grid size you should be able to use the presaved file for distortion calculations. 
+main_calc.ipynb - here we calculate transition probability and save it in folder "data": "../data/Probability.npz". Unless you would like to increase the grid size you should be able to use the presaved file for distortion calculations. Additionally you will find chi^2 maximum likelihood analysis here along with our main plot.
 
 FIRAS.py - this script is used to import and make FIRAS data ready for the chi^2 analysis
 
-max_likelihood_analysis.py - in this file we have chi^2 maximum likelihood analysis, chi^2 calcualtions. These functions will lated be used in main notebook to produce our main result.
