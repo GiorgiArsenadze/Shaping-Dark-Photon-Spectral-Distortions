@@ -1,44 +1,8 @@
-import numpy  as np
-import pandas as pd
-from   scipy.interpolate import interp1d
-from   scipy.interpolate import interp2d
-from   scipy.misc import derivative
-from   scipy import optimize
-import astropy.units as u
-from   astropy.cosmology import FlatLambdaCDM, z_at_value
-from   tqdm import *
-from   sympy import *
-from   astropy.cosmology import Planck13 as cosmo
-from   astropy import constants as const
 import sys
-from   scipy.interpolate import interp1d
-from   scipy.interpolate import interp2d
-from   scipy.special import zeta
-import pickle
+sys.path.insert(1, '../')
 
-import matplotlib.pyplot as plt
-from   matplotlib import ticker
-from matplotlib import gridspec
-import matplotlib.pylab as pylab
-#from matplotlib import colormaps
-import matplotlib.ticker as mticker
-
-
-import units
-import time
-
-from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('retina')
-
-#suppress warnings
-import warnings
-warnings.filterwarnings('ignore')
-
-
-import sys
-sys.path.insert(1, '../packages')
-
-import units
+from pckgs.import_pckg import *
+from pckgs.units import *
 
 import FIRAS
 #importing generic constants and functions
@@ -148,7 +112,6 @@ def DeltaI_over_eps2_Doppler_delta(x, m_Aprime, T0, units = 'eV_per_cmSq'):
     # Analytically, we integrate out delta(x_prime -x)
     P_over_eps2_num = np.transpose(P_over_eps2_interp(m_Aprime, x))[0]
     
-    # <<<Use T0_vary>>> in 'rho_gamma(T0)'
     # photon energy density
     rho_gamma = (np.pi**2/15) * T0**4  # in eV^4
     
@@ -214,23 +177,12 @@ def DeltaI_over_eps2_y_switch(x, x_prime_int, m_Aprime, T0, units = 'eV_per_cmSq
 
 
 
-# Transition Function X.G:
-def Ttrans_mu_XG_5p8e4_1p88(z):
+
+def Ttrans_mu(z, z_trans=5.8 * 10**4, Power_trans   = 1.88):
     
-    z_trans       = 5.8 * 10**4
-    Power_trans   = 1.88
+    # z_trans=5.8 * 10**4, Power_trans   = 1.88  from 1506.06582    
     
     Ttrans_mu = 1 - np.exp( -((1+z)/(1+z_trans))**Power_trans )
-    
-    return Ttrans_mu
-
-
-
-
-def Ttrans_mu(z):
-    
-    Ttrans_mu = Ttrans_mu_XG_5p8e4_1p88(z)        # (Chluba2015)
-   
     
     return Ttrans_mu
 
@@ -261,15 +213,5 @@ def DeltaI_over_eps2_muy_trans(x, x_prime_int, m_Aprime, T0, units = 'eV_per_cmS
                                               )
 
     return DeltaI_over_eps2_muy_trans
-
-# [[[This is what we used in chi^2 analysis!!!]]]
-def I0_dist_muy_trans(x, x_prime_int, m_Aprime, eps, T0, units = 'eV_per_cmSq'):
-    
-    # CMB intensity after distortion
-    # 1D array: N_x
-    I0_dist_y = I0(x, T0, units=units) + eps**2 * DeltaI_over_eps2_muy_trans(x, x_prime_int, m_Aprime, T0, units = units)
-    
-    return I0_dist_y
-
 
 

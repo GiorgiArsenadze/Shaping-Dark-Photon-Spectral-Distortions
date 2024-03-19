@@ -1,47 +1,8 @@
-import numpy  as np
-import pandas as pd
-from   scipy.interpolate import interp1d
-from   scipy.interpolate import interp2d
-from   scipy.misc import derivative
-from   scipy import optimize
-import astropy.units as u
-#import astropy.constants as c
-from   astropy.cosmology import FlatLambdaCDM, z_at_value
-from   tqdm import *
-from   sympy import *
-from   astropy.cosmology import Planck13 as cosmo
-from   astropy import constants as const
 import sys
-from   scipy.interpolate import interp1d
-from   scipy.interpolate import interp2d
-from   scipy.special import zeta
-import pickle
+sys.path.insert(1, '../')
 
-import matplotlib.pyplot as plt
-from   matplotlib import ticker
-from matplotlib import gridspec
-import matplotlib.pylab as pylab
-#from matplotlib import colormaps
-import matplotlib.ticker as mticker
-
-
-import units
-import time
-
-from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('retina')
-
-#suppress warnings
-import warnings
-warnings.filterwarnings('ignore')
-
-
-import sys
-sys.path.insert(1, '../packages')
-
-import units
-
-
+from pckgs.import_pckg import *
+from pckgs.units import *
 import FIRAS
 from const_func_general import *
 
@@ -57,6 +18,7 @@ x_0 = (4*zeta(4))/zeta(3)
 kappa_c = (45/np.pi**4)*( 2*np.pi**6/(135*zeta(3)) - 6*zeta(3) )
 
 
+#visibility function
 def J_bb(z):
     
     z_mu = 1.98e6
@@ -65,7 +27,7 @@ def J_bb(z):
 
 
 # Surviving Probability
-# From Chluba 2015 1506.06582
+# From 1506.06582
 def survival_prob(x, z):
     
     xc_DC = 8.60e-3 * ((1.+z)/2e6)**0.5
@@ -107,25 +69,25 @@ def I0(x, T0, units='eV_per_cmSq'):
 
 
 # rho_bar(x):
-# Normalized and Dimless Intensity, Defined in Hook2023
+# Normalized and Dimless Intensity, from 2306.13135
 def rho_bar(x):
     
     return (15/np.pi**4) * x**3/(np.exp(x)-1)
 
 
-# G-function (Chluba 15)
+# G-function from 1506.06582
 def G(x, T0, units='eV_per_cmSq'):
 
     return I0(x, T0, units=units) * T_shift(x)
 
 
-# M-function (Chluba 15)
+# M-function from 1506.06582
 def M(x, T0, units='eV_per_cmSq'):
     
     return G(x, T0, units=units) * (alpha_mu - 1./x)
 
 
-# Y-function (Chluba 15)
+# Y-function from 1506.06582
 def Y(x, T0, units='eV_per_cmSq'):
     
     Y = G(x, T0, units=units) * ( x/np.tanh(x/2)-4 )
@@ -137,7 +99,7 @@ def f(x):
     return np.exp(-x) * ( 1 + x**2/2 )
 
 # Compton-y parameter (Photon)
-# Modified by X.G by replacing ``x_e(z_to_int) * ne0 * (1.0 + z_to_int) ** 3'' with ``n_e(z)''
+# Modified, ``x_e(z_to_int) * ne0 * (1.0 + z_to_int) ** 3'' with ``n_e(z)''
 def y_gamma(z):
     
     z_to_int = np.logspace(-5, np.log10(z), 500)
@@ -191,7 +153,7 @@ def approx_low_x_Draine(x, T_e):
     return 4.691 * (1.0 - 0.118 * np.log(27.0783 * x * theta_e ** (-0.5)))
 
 
-# Gaunt factor: g_ff    (Modifed by X.G)
+# Gaunt factor: g_ff   
 # x    : 1D array N_x
 # g_ff : 1D array N_x
 def g_ff(x, T_e):  # here we define the Gaunt factor as in https://astrojacobli.github.io/astro-ph/ISM/Draine.pdf, sec.10.2
@@ -203,7 +165,7 @@ def g_ff(x, T_e):  # here we define the Gaunt factor as in https://astrojacobli.
     return g_ff_out
 
 
-# Lambda_BR           (Modifed by X.G)
+# Lambda_BR          
 # x    : 1D array N_x
 # XeH  : 1D array N_XeH
 
@@ -363,57 +325,6 @@ def P_over_eps2(mAp, x):
     return P_over_eps2
 
 
-# # **********************************************************************
-# # Import probability
-# # **********************************************************************
-
-# # -------------------------------------------------------
-
-
-file_name = "../data/Probability.npz"
-if file_name is not None:
-    file = np.load(file_name)
-# x:   1D array
-x_1Dary_P_import = file['x_P_scan_ary']
-# -------------------------------------------------------
-# mAp: 1D array
-mAp_1Dary_P_import = file['mAp_P_scan_ary']
-
-# -------------------------------------------------------
-# P/eps^2: 2D array
-P_over_eps2_2Dary_import = file['P_over_eps2_scan_2Dary']
-
-
-zres_2Dary_import=file['zres_scan_2Dary']
-
-
-# Interpolation: Log10(P/eps^2), Log10(z_res)
-# Input: Log10(mAp), x
-
-Reg_trans= 10**(-100)
-
-log10P_over_eps2_interp = interp2d( np.log10(mAp_1Dary_P_import), x_1Dary_P_import, np.log10(P_over_eps2_2Dary_import + Reg_trans) )
-log10zres_interp        = interp2d( np.log10(mAp_1Dary_P_import), x_1Dary_P_import, np.log10(zres_2Dary_import + Reg_trans)  )
-
-# P/eps^2 from 2D interpolation
-# Input: Log10(mAp), x
-def P_over_eps2_interp(mAp, x):
-    
-    P_over_eps2_interp = 10**log10P_over_eps2_interp( np.log10(mAp), x )
-    
-    return P_over_eps2_interp
-
-# zres from 2D interpolation
-# Input: Log10(mAp), x
-# Note! Here, 'zres_interp' only picks the minimal zres when there is multi solution
-def zres_interp(mAp,x):
-    
-    zres_interp = 10**log10zres_interp( np.log10(mAp), x )
-    
-    return zres_interp
-
-
-
 
 # Green's Function in mu-era: M-part
 def greens_mu_M(x, x_prime, z_prime,  T0, units='eV_per_cmSq'):
@@ -453,7 +364,7 @@ def greens_mu_MT(x, x_prime, z_prime,  T0, units='eV_per_cmSq'):
     return greens_mu_ary
 
 
-# alpha function defined in Hook2023 and Chluba2015
+# alpha function from 2306.13135 and 1506.06582
 def alpha_func(x_prime,z_prime):
     
     # Compton y-parameter (photon)
@@ -465,7 +376,7 @@ def alpha_func(x_prime,z_prime):
     return alpha_func
 
 
-# beta function defined in Hook2023 and Chluba2015
+# beta function from 2306.13135 and 1506.06582
 def beta_func(x_prime,z_prime):
     
     # Compton y-parameter (photon)
@@ -493,7 +404,6 @@ def greens_Y(x,x_prime,z_prime,T0,units="eV_per_cmSq"):
     # Compton y-parameter (photon)
     y = y_gamma(z_prime)
     
-    # <<<Use T0_vary>>> in 'rho_gamma(T0)'
     # photon energy density
     rho_gamma = (np.pi**2/15) * T0**4 /( hbar*c )**3  # in eV/cm^3
     
@@ -508,15 +418,11 @@ def greens_Y(x,x_prime,z_prime,T0,units="eV_per_cmSq"):
     beta = 1/( 1 + x_prime * y * (1-f(x_prime)) )
     
     
-    # <<<Use T0_vary>>> in 'Y(x_prime, T0, units=units)'
     # 2D array: N_x * N_xp
     # We use [:,None] to make Y(x) to be a 2D N_x * 1 array
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     term_Y = (1.0 - np.exp(y * (alpha + beta)) * np.exp(-tau) / (1.0 + x_prime * y)) * Y(x, T0, units="eV_per_cmSq")[:, None] / 4
     # in eV/cm^2
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
-    # Correct (Modified Chluba)
     # 2D array: N_x * N_xp
     green_Y = prefac * term_Y * x_prime * alpha_rho  
     
@@ -539,7 +445,6 @@ def greens_Doppler(x,x_prime,z_prime,T0,units="eV_per_cmSq"):
     # Compton y-parameter (photon)
     y = y_gamma(z_prime)
     
-    # <<<Use T0_vary>>> in 'rho_gamma(T0)'
     # photon energy density
     rho_gamma = (np.pi**2/15) * T0**4 /( hbar*c )**3  # in eV/cm^3
     
@@ -557,12 +462,10 @@ def greens_Doppler(x,x_prime,z_prime,T0,units="eV_per_cmSq"):
     # We use [:,None] to make x to be a 2D N_x * 1 array
     gaussian = np.exp(-((np.log(x[:, None] / x_prime) - alpha * y + np.log(1 + x_prime * y)) ** 2) / (4 * y * beta)) / (x_prime * np.sqrt(4 * np.pi * y * beta))
     
-    # <<<Use T0_vary>>> in '2pi/T0'
     # 2D array: N_x * N_xp
     term_Doppler = c * hbar * ( rho_gamma / (4*np.pi) )  * ( 2*np.pi/T0 ) * np.exp(-tau) * gaussian
     # in eV/cm^2
 
-    # Correct (Modified Chluba)
     # 2D array: N_x * N_xp
     green_Doppler = prefac * term_Doppler * x_prime * alpha_rho
     
@@ -585,7 +488,6 @@ def greens_y(x,x_prime,z_prime,T0,units="eV_per_cmSq"):
     # Compton y-parameter (photon)
     y = y_gamma(z_prime)
     
-    # <<<Use T0_vary>>> in 'rho_gamma(T0)'
     # photon energy density
     rho_gamma = (np.pi**2/15) * T0**4 /( hbar*c )**3  # in eV/cm^3
     
@@ -603,18 +505,15 @@ def greens_y(x,x_prime,z_prime,T0,units="eV_per_cmSq"):
     # We use [:,None] to make x to be a 2D N_x * 1 array
     gaussian = np.exp(-((np.log(x[:, None] / x_prime) - alpha * y + np.log(1 + x_prime * y)) ** 2) / (4 * y * beta)) / (x_prime * np.sqrt(4 * np.pi * y * beta))
 
-    # <<<Use T0_vary>>> in 'Y(x_prime, T0, units=units)'
     # 2D array: N_x * N_xp
     # We use [:,None] to make Y(x) to be a 2D N_x * 1 array
     term_Y = (1.0 - np.exp(y * (alpha + beta)) * np.exp(-tau) / (1.0 + x_prime * y)) * Y(x, T0, units="eV_per_cmSq")[:, None] / 4
     # in eV/cm^2
     
-    # <<<Use T0_vary>>> in '2pi/T0'
     # 2D array: N_x * N_xp
     term_Doppler = c * hbar * ( rho_gamma / (4*np.pi) )  * ( 2*np.pi/T0 ) * np.exp(-tau) * gaussian
     # in eV/cm^2
     
-    # Correct (Modified Chluba)
     # 2D array: N_x * N_xp
     green_y = prefac * (term_Y + term_Doppler) * x_prime * alpha_rho
     

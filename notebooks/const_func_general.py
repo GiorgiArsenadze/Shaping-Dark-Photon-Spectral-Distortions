@@ -1,46 +1,10 @@
 
 
-import numpy  as np
-import pandas as pd
-from   scipy.interpolate import interp1d
-from   scipy.interpolate import interp2d
-from   scipy.misc import derivative
-from   scipy import optimize
-import astropy.units as u
-from   astropy.cosmology import FlatLambdaCDM, z_at_value
-from   tqdm import *
-from   sympy import *
-from   astropy.cosmology import Planck13 as cosmo
-from   astropy import constants as const
 import sys
-from   scipy.interpolate import interp1d
-from   scipy.interpolate import interp2d
-from   scipy.special import zeta
-import pickle
+sys.path.insert(1, '../')
 
-import matplotlib.pyplot as plt
-from   matplotlib import ticker
-from matplotlib import gridspec
-import matplotlib.pylab as pylab
-#from matplotlib import colormaps
-import matplotlib.ticker as mticker
-
-
-
-import time
-
-from IPython.display import set_matplotlib_formats
-set_matplotlib_formats('retina')
-
-#suppress warnings
-import warnings
-warnings.filterwarnings('ignore')
-
-import sys
-sys.path.insert(1, '../packages')
-
-import units
-
+from pckgs.import_pckg import *
+from pckgs.units import *
 
 
 
@@ -53,7 +17,6 @@ c = 2.99792458*1e10            # in cm/s
 
 mpl = 1.2209 * 10**19 * 10**9  # in eV
 
-# Defined by X.G
 
 # Consistent with my MMA
 cm_to_m     = 10**(-2)
@@ -77,7 +40,8 @@ K = 1/eV_to_K  # in eV
 
 # Cosmological Constants
 
-# Planck 2018 paper VI Table 2 Final column (68% confidence interval)
+# from 1807.06209 VI Table 2 Final column (68% confidence interval), 
+
 planck18_cosmology = {'Oc0': 0.2607,
                               'Ob0': 0.04897,
                               'Om0': 0.3111,
@@ -96,11 +60,11 @@ planck18_cosmology = {'Oc0': 0.2607,
                               }
 
 
-# TCMB_0 from Planck 2018
+# TCMB_0 from 1807.06209
 TCMB_0   = planck18_cosmology["Tcmb0"]*K # in eV
 
 # H = h_Hubble * 100 km/s/Mpc
-# Note: 'h' is already used for Planck constant before
+# Note: 'h' has already been used for Planck constant
 h_Hubble = planck18_cosmology["Hubble0"]/100
 
 H0       = h_Hubble * ( 100 * km_to_cm * sInv_to_eV/ Mpc_to_cm )   # in eV
@@ -167,7 +131,7 @@ def n_H(z):
 
 
 # ========================================================
-# x_e function defined by A.C
+# x_e function
 # ========================================================
 
 x_e_data = pickle.load(open("../data/std_soln_He.p", "rb"))
