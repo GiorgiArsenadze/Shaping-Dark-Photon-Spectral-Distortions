@@ -686,3 +686,4 @@ params = {'_internal.classic_mode': False,
  'ytick.minor.visible': True,
  'ytick.minor.width': 0.8,
  'ytick.right': True}
+
