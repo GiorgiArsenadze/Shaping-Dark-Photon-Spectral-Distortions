@@ -24,17 +24,6 @@ x_0 = Tk(3)/Tk(2)
 kappa_c = (Tk(1)*Tk(3)-Tk(2)**2)/(Fk(2)*Fk(3))
 
 
-# alpha_rho_old = zeta(3)/(3*zeta(4))
-# alpha_mu_old  = zeta(2)/(3*zeta(3))
-# x_0_old = (4*zeta(4))/zeta(3)
-# kappa_c_old = (45/np.pi**4)*( 2*np.pi**6/(135*zeta(3)) - 6*zeta(3) )
-
-# check_1=alpha_rho/alpha_rho_old
-# check_2=alpha_mu/alpha_mu_old
-# check_3=x_0/x_0_old
-# check_4=kappa_c/kappa_c_old
-
-
 
 #visibility function
 def J_bb(z):
