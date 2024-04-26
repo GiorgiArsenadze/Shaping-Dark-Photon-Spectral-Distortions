@@ -208,6 +208,13 @@ ne0 = n_e(0)
 mASq0 = ee**2 * (ne0 * cmInv_to_eV**3)/m_e  # in eV^2
 
 
+# m_Aprime_res for RAD universe(Approx)
+def m_Aprime_res_RAD(z_res):
+    
+    m_Aprime_res = np.sqrt( mASq0 * (1+z_res)**3 )
+    
+    return m_Aprime_res   # in eV
+
 
 def rho_gamma(T):
     
