@@ -17,7 +17,7 @@ The notebooks folder contains main_calc Jupyter notebook that reproduces the cal
 * Giorgi Arsenadze; ga1348@nyu.edu
 * Andrea Caputo; andrea.caputo@cern.ch
 * Xucheng Gan; xg767@nyu.edu
-* Hongwan Liu; hongwanl@princeton.edu
+* Hongwan Liu; hongwan@bu.edu
 * Joshua T. Ruderman; ruderman@nyu.edu
 
 
