@@ -11,7 +11,7 @@ The cosmic microwave background (CMB) spectrum is an extraordinary tool for expl
 
 # Code
 
-The notebooks folder contains main_calc.ipynb Jupyter notebook that reproduces the calculattion and the plot in the paper. 
+The notebooks folder contains main_calc Jupyter notebook that reproduces the calculattion and the plot in the paper. 
 
 # Authors
 * Giorgi Arsenadze; ga1348@nyu.edu
