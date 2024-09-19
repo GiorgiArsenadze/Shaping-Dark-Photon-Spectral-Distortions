@@ -2,7 +2,7 @@
 # Shaping Dark Photon Spectral Distortions
 
 This is the code to calculate CMB spectral distortions from dark photon oscillation
-![Main result](https://github.com/GiorgiArsenadze/CMB-Spectral-Distortions-from-Dark-Photon-Oscillation/blob/main/mAp_eps_plt_allbounds.png)
+![Main result]()
 
 
 # Abstract
