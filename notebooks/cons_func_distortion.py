@@ -283,7 +283,6 @@ def get_z_crossings(mAp, omega0, z_ary = np.logspace(-3, 8, 10000)):
         
         return mAsq(z, omega0) - mAp**2
     
-    # We use list, because '.append' can be applied in list, but not array
     z_cross_list = []
     
     # Solve z_cross for each grid containing level crossing
