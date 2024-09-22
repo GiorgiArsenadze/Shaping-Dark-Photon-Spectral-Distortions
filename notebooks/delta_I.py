@@ -507,14 +507,17 @@ def I0_dist_muy_trans(x, x_prime_int, m_Aprime, eps, T0, units = 'eV_per_cmSq'):
     
     return I0_dist_y
 
-def Ttrans_y_McDermott(z):
+
+
+def Ttrans_y_ex_1(z):
+
     
     Ttrans_y = 1/( 1 + ((1+z)/6e4)**2.58 )
     
     return Ttrans_y
 
 
-def Ttrans_mu_Chluba(z):
+def Ttrans_mu_ex_2(z):
     
     z_trans     = 5.8 * 10**4
     Power_trans = 1.88
@@ -524,17 +527,12 @@ def Ttrans_mu_Chluba(z):
     return Trans_mu
 
 
-def Ttrans_mu_McDermott(z):
+def Ttrans_mu_ex_1(z):
     
-    Ttrans_mu = 1 - Ttrans_y_McDermott(z)
+    Ttrans_mu = 1 - Ttrans_y_ex_1(z)
     
     return Ttrans_mu
 
-# def Ttrans_mu_McDermott(z):
-    
-#     Ttrans_mu = Ttrans_mu_Chluba(z)
-    
-#     return Ttrans_mu
 
 
 
