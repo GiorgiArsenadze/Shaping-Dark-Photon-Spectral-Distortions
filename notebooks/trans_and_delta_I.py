@@ -11,7 +11,7 @@ from cons_func_distortion import *
 
 # Importing probability
 
-file_name = "../data/Probability.npz"
+file_name = "../data/data_output/Probability.npz"
 if file_name is not None:
     file = np.load(file_name)
 # x:   1D array
