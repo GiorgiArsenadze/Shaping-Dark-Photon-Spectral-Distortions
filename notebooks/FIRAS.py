@@ -8,7 +8,7 @@ from pckgs.units import *
 # Import COBE-FIRAS data from astro-ph/9605054
 import pandas as pd
 
-FIRAS_data_ary = np.transpose( np.array( pd.read_csv('../data/FIRASData.csv') ) )
+FIRAS_data_ary = np.transpose( np.array( pd.read_csv('data/FIRASData.csv') ) )
 
 # nu [cm^-1]
 FIRAS_nu_ary  = np.ndarray.flatten( FIRAS_data_ary[[0]] )
