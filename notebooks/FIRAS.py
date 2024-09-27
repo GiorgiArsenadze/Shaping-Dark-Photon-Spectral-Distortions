@@ -1,5 +1,8 @@
-# import sys
-# sys.path.insert(1, '../')
+import sys
+sys.path.insert(0, '../')
+sys.path.insert(1, '../../')
+
+
 
 from pckgs.import_pckg import *
 from pckgs.units import *
