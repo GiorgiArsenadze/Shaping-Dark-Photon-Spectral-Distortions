@@ -15,3 +15,8 @@ you should skip part of the code indicated in the notebook and only import presa
 
 FIRAS.py - this script is used to import and make FIRAS data ready for the chi^2 analysis
 
+normalization_check.ipynb - here we check greens function normalization. 
+Greens_Function_Plot_VaryTrans - Notebooks with this name are generating greens function fitting plots for various xp values
+trans_and_delta_I.py - in this python code are saved functions calculatting delta_I
+distorsion_signature.ipynb - In this file one can reproduce distortion signature plots
+main_plot.ipynb - In this notebook one will find plotying of the main figures from the paper. One can regenarate needed data from main_calc or just use it from the data folder.
