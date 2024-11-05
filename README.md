@@ -2,7 +2,7 @@
 # Shaping Dark Photon Spectral Distortions
 
 This is the code to calculate CMB spectral distortions from dark photon oscillation
-![Main result](https://github.com/GiorgiArsenadze/Shaping-Dark-Photon-Spectral-Distortions/blob/main/Dark_Photon_COBE_FIRAS_Constraint_.png)
+![Main result](https://github.com/GiorgiArsenadze/Shaping-Dark-Photon-Spectral-Distortions/blob/main/Dark_Photon_COBE_FIRAS_Constraint.png)
 
 
 # Abstract
